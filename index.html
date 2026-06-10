@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário de Obra PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root { --primary: #007bff; --dark: #333; --light: #f4f4f9; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: var(--light); color: var(--dark); }
+        .screen { display: none; max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .active { display: block; }
+        button { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        button.secondary { background: #6c757d; }
+        input, textarea { width: 100%; padding: 10px; margin: 8px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .photo-preview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+        .photo-preview img { width: 100%; hieght: auto; border-radius: 4px; }
+        .report-card { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div id="screen-home" class="screen active">
+        <h2>Diário de Obra</h2>
+        <p>Selecione o seu perfil de acesso:</p>
+        <button onclick="switchScreen('screen-form')">Responsável pela Obra (Acesso Direto)</button>
+        <button class="secondary" onclick="promptAdminLogin()">Administrador (Requer Senha)</button>
+    </div>
+
+    <div id="screen-form" class="screen">
+        <h2>Novo Diário de Obra</h2>
+        <form id="diary-form">
+            <label>Responsável:</label>
+            <input type="text" id="input-author" required>
+
+            <label>Data da Obra:</label>
+            <input type="date" id="input-date" required>
+
+            <label>Resumo das Atividades / Ocorrências:</label>
+            <textarea id="input-description" rows="5" required></textarea>
+
+            <label>Fotos da Obra (Sem limite de quantidade):</label>
+            <input type="file" id="input-photos" accept="image/*" multiple>
+            <div id="preview-container" class="photo-preview"></div>
+
+            <button type="submit">Salvar Diário (Funciona Offline)</button>
+            <button type="button" class="secondary" onclick="switchScreen('screen-home')">Voltar</button>
+        </form>
+    </div>
+
+    <div id="screen-admin" class="screen">
+        <h2>Painel do Administrador</h2>
+        <button onclick="exportToExcel()" style="background: #28a745; font-weight: bold; margin-bottom: 20px;">📊 Exportar Relatórios como Planilha</button>
+        
+        <h3>Relatórios Enviados:</h3>
+        <div id="admin-reports-list"></div>
+        
+        <button class="secondary" onclick="switchScreen('screen-home')">Sair do Admin</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
