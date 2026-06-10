@@ -1,0 +1,16 @@
+{
+  "short_name": "DiárioObra",
+  "name": "Diário de Obra PWA",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/4344/4344822.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#f4f4f9",
+  "theme_color": "#007bff",
+  "display": "standalone",
+  "orientation": "portrait"
+}
